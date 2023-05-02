@@ -1,10 +1,10 @@
 -- Completar con los datos del grupo
 --
--- Nombre de Grupo: xx
--- Integrante 1: Nombre Apellido, email, LU
--- Integrante 2: Nombre Apellido, email, LU
--- Integrante 3: Nombre Apellido, email, LU
--- Integrante 4: Nombre Apellido, email, LU
+-- Nombre de Grupo: WhatTheHaskell
+-- Integrante 1: Alison Yamila Herrera Aguilar, yaliherrera02@gmail.com, 814/23
+-- Integrante 2: Camila Aylén Grassi, camigras04@gmail.com, 176/23
+-- Integrante 3: Sofía Gerpe Lizárraga, sofiagerpel@gmail.com, 411/23
+-- Integrante 4: Theo Vilardo, theovilardo@gmail.com, 743/22
 
 type Usuario = (Integer, String) -- (id, nombre)
 type Relacion = (Usuario, Usuario) -- usuarios que se relacionan
