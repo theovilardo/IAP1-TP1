@@ -18,4 +18,4 @@ Este es un trabajo práctico en grupo que consiste en crear un modelo de red soc
 3. Corre el siguiente comando:
 
 ```bash
-ghci Main.hs
+ghci iap1-tp.hs
