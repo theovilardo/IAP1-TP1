@@ -85,11 +85,6 @@ nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)
 
 -- Funciones Auxiliares
 
-pertenece :: (Eq t) => t -> [t] -> Bool                   -- ignorar
-pertenece a [] = False
-pertenece a (x:xs) | a == x = True
-                   | otherwise = pertenece a xs
-
 nombreUsuario2 :: [Usuario] -> [String]
 nombreUsuario2 (x:xs) | null (x:xs) = []
                       | (x:xs) == [x] = [snd x]
@@ -99,25 +94,6 @@ proyectarNombres :: [Usuario] -> [String]
 proyectarNombres (x:xs) | null (x:xs) = []
                         | (x:xs) == [x] = nombreUsuario2 (x:xs)
                         | otherwise = nombreUsuario2 (x:xs) ++ proyectarNombres xs
-
-
-todosDistintos :: Eq a => [a] -> Bool
-todosDistintos [] = True                                  -- ignorar
-todosDistintos [x] = True                                 
-todosDistintos (x:xs) | pertenece x xs = False
-                 | otherwise = todosDistintos xs
-
-quitar :: (Eq t) => t -> [t] -> [t]
-quitar a (x:xs) | null (x:xs) = []                         -- ignorar
-                | not (pertenece a (x:xs)) = x:xs
-                | a == x = xs
-                | otherwise = quitar a xs
-
-quitNomY :: (Eq t) => [t] -> [t]
-quitNomY [] = []
-quitNomY (x:xs) | todosDistintos (x:xs) = x:xs                -- ignorar
-                | pertenece x xs = quitNomY (quitar x xs)
-                | otherwise = x : quitNomY xs
 
 eliminaRepetidos :: Eq a => [a] -> [a]
 eliminaRepetidos [] = []
