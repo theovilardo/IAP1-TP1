@@ -85,7 +85,7 @@ nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)
 
 -- Funciones Auxiliares
 
-pertenece :: (Eq t) => t -> [t] -> Bool
+pertenece :: (Eq t) => t -> [t] -> Bool                   -- ignorar
 pertenece a [] = False
 pertenece a (x:xs) | a == x = True
                    | otherwise = pertenece a xs
@@ -96,19 +96,19 @@ nombreUsuario2 (x:xs) | null (x:xs) = []
                       | otherwise = [snd (head (x:xs))]
 
 proyectarNombres :: [Usuario] -> [String]
-proyectarNombres (x:xs) | null (x:xs) = ["final"]
+proyectarNombres (x:xs) | null (x:xs) = []
                         | (x:xs) == [x] = nombreUsuario2 (x:xs)
                         | otherwise = nombreUsuario2 (x:xs) ++ proyectarNombres xs
 
 
 todosDistintos :: Eq a => [a] -> Bool
-todosDistintos [] = True
-todosDistintos [x] = True
+todosDistintos [] = True                                  -- ignorar
+todosDistintos [x] = True                                 
 todosDistintos (x:xs) | pertenece x xs = False
                  | otherwise = todosDistintos xs
 
 quitar :: (Eq t) => t -> [t] -> [t]
-quitar a (x:xs) | null (x:xs) = []
+quitar a (x:xs) | null (x:xs) = []                         -- ignorar
                 | not (pertenece a (x:xs)) = x:xs
                 | a == x = xs
                 | otherwise = quitar a xs
