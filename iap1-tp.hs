@@ -116,9 +116,22 @@ contarAmigos :: [Usuario] -> Int
 contarAmigos []= 0
 contarAmigos (x:xs) = 1+ contarAmigos xs
 
--- describir qué hace la función: .....
+-- describir qué hace la función: dada la red social, devuelve el usuario con mas amigos
 usuarioConMasAmigos :: RedSocial -> Usuario
-usuarioConMasAmigos = undefined
+usuarioConMasAmigos (us,rs,ps) = cantidadDeAcu (us,rs,ps) (usuarios (us,rs,ps))
+
+-- ???: DUDA CON LAS REPETICIONES EN CANTIDAD DE AMIGOS
+
+-- Funciones Auxiliares
+cantidadDeAcu :: RedSocial -> [Usuario] -> Usuario
+cantidadDeAcu rs (x:xs) | null (x:xs) = x
+                        | cantidadDeAmigos (rs) x > cantidadDeAmigos (rs) (head xs) = x
+                        | otherwise = cantidadDeAcu rs xs
+
+-- Reemplazo de head por las dudas:
+cabeza :: [a] -> a
+cabeza [] = []
+cabeza (x:xs) = x
 
 -- describir qué hace la función: .....
 estaRobertoCarlos :: RedSocial -> Bool
