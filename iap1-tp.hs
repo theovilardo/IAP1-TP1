@@ -138,9 +138,17 @@ estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 1000000 = True
                              | otherwise = False
 
--- describir qué hace la función: .....
+-- describir qué hace la función: devuelve las publicaciones de un usuario dentro de la red social
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
-publicacionesDe = undefined
+publicacionesDe (us,rs,ps) u = pubDe (publicaciones (us,rs,ps)) u
+
+-- Funciones Auxiliares
+
+pubDe :: [Publicacion] -> Usuario -> [Publicacion]
+pubDe [] _ = []
+pubDe (x:xs) u | null (x:xs) = [x]
+               | usuarioDePublicacion x == u = x : pubDe xs u
+               | otherwise = pubDe xs u
 
 -- describir qué hace la función: .....
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
