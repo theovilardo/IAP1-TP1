@@ -85,15 +85,9 @@ nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)
 
 -- Funciones Auxiliares
 
-nombreUsuario2 :: [Usuario] -> [String]
-nombreUsuario2 (x:xs) | null (x:xs) = []
-                      | (x:xs) == [x] = [snd x]
-                      | otherwise = [snd (head (x:xs))]
-
 proyectarNombres :: [Usuario] -> [String]
-proyectarNombres (x:xs) | null (x:xs) = []
-                        | (x:xs) == [x] = nombreUsuario2 (x:xs)
-                        | otherwise = nombreUsuario2 (x:xs) ++ proyectarNombres xs
+proyectarNombres [] = []
+proyectarNombres (x:xs) = snd x : proyectarNombres xs
 
 eliminaRepetidos :: Eq a => [a] -> [a]
 eliminaRepetidos [] = []
@@ -101,11 +95,6 @@ eliminaRepetidos (x:xs) = x : eliminaRepetidos (quita x xs)
   where quita _ [] = []
         quita y (z:zs) | y == z    = quita y zs
                        | otherwise = z : quita y zs
-                       
---Idea para simplificar la funcion proyectarNombres
-proyectarNombres :: [Usuario] -> [String]
-proyectarNombres [] = []
-proyectarNombres (x:xs) = snd x : proyectarNombres xs
 
 -- describir qué hace la función: .....
 --Le falta función para eliminar los repetidos
