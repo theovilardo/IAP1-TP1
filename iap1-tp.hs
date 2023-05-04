@@ -79,7 +79,7 @@ redB = (usuariosB, relacionesB, publicacionesB)
 
 -- Ejercicios
 
--- describir qué hace la función: devuelve los nombres de usuario de la red social
+-- describir qué hace la función: EJERCICIO 1 -> Devuelve los nombres de usuario de la red social
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)))
 
@@ -96,7 +96,7 @@ eliminaRepetidos (x:xs) = x : eliminaRepetidos (quita x xs)
         quita y (z:zs) | y == z    = quita y zs
                        | otherwise = z : quita y zs
 
--- describir qué hace la función: .....
+-- describir qué hace la función: EJERCICIO 2 -> Devuelve la lista de amigos que tiene el usuario ingresado (dentro de la red)
 --Le falta función para eliminar los repetidos
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe rd u = listaDeAmigos u (relaciones rd)
@@ -108,7 +108,7 @@ listaDeAmigos u (x:xs) | u == fst x = snd x : listaDeAmigos u xs
                        | u == snd x = fst x : listaDeAmigos u xs
                        | otherwise = listaDeAmigos u xs 
 
--- describir qué hace la función: .....
+-- describir qué hace la función: EJERCICIO 3 -> Devuelve la cantidad de amigos que tiene el usuario ingresado (dentro de la red)
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
 cantidadDeAmigos (us,rs,ps) (id, nombre) = contarAmigos (amigosDe (us,rs,ps) (id, nombre))
 
@@ -116,11 +116,9 @@ contarAmigos :: [Usuario] -> Int
 contarAmigos []= 0
 contarAmigos (x:xs) = 1+ contarAmigos xs
 
--- describir qué hace la función: dada la red social, devuelve el usuario con mas amigos
+-- describir qué hace la función: EJERCICIO 4 -> Dada la red social, devuelve el usuario con mas amigos
 usuarioConMasAmigos :: RedSocial -> Usuario
 usuarioConMasAmigos (us,rs,ps) = cantidadDeAcu (us,rs,ps) (usuarios (us,rs,ps))
-
--- ???: DUDA CON LAS REPETICIONES EN CANTIDAD DE AMIGOS
 
 -- Funciones Auxiliares
 cantidadDeAcu :: RedSocial -> [Usuario] -> Usuario
@@ -133,12 +131,12 @@ cabeza :: [a] -> a
 cabeza [] = []
 cabeza (x:xs) = x
 
--- describir qué hace la función: si dentro de la red hay un usuario con mas de un millon de amigos devuelve True
+-- describir qué hace la función: EJERCICIO 5 -> Si dentro de la red hay un usuario con mas de un millon de amigos devuelve True, sino False
 estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 1000000 = True
                              | otherwise = False
 
--- describir qué hace la función: devuelve las publicaciones de un usuario dentro de la red social
+-- describir qué hace la función: EJERCICIO 6 -> devuelve las publicaciones de un usuario dentro de la red social
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
 publicacionesDe (us,rs,ps) u = pubDe (publicaciones (us,rs,ps)) u
 
@@ -150,9 +148,9 @@ pubDe (x:xs) u | null (x:xs) = [x]
                | usuarioDePublicacion x == u = x : pubDe xs u
                | otherwise = pubDe xs u
 
--- describir qué hace la función: devuelve las publicaciones que le gustaron a un determinado usuario
+-- describir qué hace la función: EJERCICIO 7 -> Devuelve las publicaciones que le gustaron al usuario ingresado (dentro de la red)
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
-publicacionesQueLeGustanA (us,rs,ps) u = tusLikes (publicaciones (us,rs,ps)) u -- FALTA PROBAR LOS CASOS DE REPETICION
+publicacionesQueLeGustanA (us,rs,ps) u = eliminaRepetidos (tusLikes (publicaciones (us,rs,ps)) u) -- FALTA PROBAR LOS CASOS DE REPETICION
 
 -- Funciones Auxiliares
 
@@ -167,14 +165,49 @@ pertenece a [] = False
 pertenece a (x:xs) | a == x = True
                    | otherwise = pertenece a xs
 
--- describir qué hace la función: .....
+-- describir qué hace la función: EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones #Actualizado para la version 2.1 del TP
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
-lesGustanLasMismasPublicaciones = undefined
+lesGustanLasMismasPublicaciones (us,rs,ps) a b | mismaCantidad (publicacionesQueLeGustanA (us,rs,ps) a) (publicacionesQueLeGustanA (us,rs,ps) b) && mismosElementos (publicacionesQueLeGustanA (us,rs,ps) a) (publicacionesQueLeGustanA (us,rs,ps) b) = True
+                                               | otherwise = False
 
--- describir qué hace la función: .....
+-- Funciones Auxiliares
+
+longitud :: Eq t => [t] -> Integer
+longitud (x:xs) | null (x:xs) = 0
+                | (x:xs) == [x] = 1
+                | otherwise = 1 + longitud xs
+
+mismaCantidad :: (Eq t) => [t] -> [t] -> Bool
+mismaCantidad a b | a == b = True
+                  | longitud a == longitud b = True
+                  | otherwise = False
+
+mismosElementos :: (Eq t) => [t] -> [t] -> Bool
+mismosElementos a b = listaEnLista a b && listaEnLista b a
+
+listaEnLista :: (Eq t) => [t] -> [t] -> Bool
+listaEnLista [] y = True
+listaEnLista (x:xs) y = pertenece x y && listaEnLista xs y
+
+-- describir qué hace la función: EJERCICIO 9 -> Devuelve True si existe un usuario que le haya dado like a todas las publicaciones hechas por el usuario ingresado
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
-tieneUnSeguidorFiel = undefined
+tieneUnSeguidorFiel (us,rs,ps) u = likesPertenecen (us,rs,ps) (usuarios (us,rs,ps)) (publicacionesDe (us,rs,ps) u)
 
--- describir qué hace la función: .....
+-- Funciones Auxiliares
+
+likesPertenecen :: RedSocial -> [Usuario] -> [Publicacion] -> Bool
+likesPertenecen (_,_,_) [] _ = False
+likesPertenecen (us,rs,ps) _ [] = False
+likesPertenecen (us,rs,ps) (x:xs) (y:ys) | perteneceLike (y:ys) (publicacionesQueLeGustanA (us,rs,ps) x) = True
+                                         | otherwise = likesPertenecen (us,rs,ps) xs (y:ys)
+
+perteneceLike :: (Eq t) => [t] -> [t] -> Bool
+perteneceLike [] [] = False
+perteneceLike _ [] = False
+perteneceLike (y:ys) (x:xs) | (y:ys) == [y] && pertenece y (x:xs) = True
+perteneceLike (y:ys) (x:xs) | pertenece y (x:xs) = perteneceLike ys (x:xs)
+                            | otherwise = False
+
+-- describir qué hace la función: EJERCICIO 10 -> Que diablos es esto
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos = undefined
