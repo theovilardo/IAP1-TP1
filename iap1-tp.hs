@@ -150,9 +150,22 @@ pubDe (x:xs) u | null (x:xs) = [x]
                | usuarioDePublicacion x == u = x : pubDe xs u
                | otherwise = pubDe xs u
 
--- describir qué hace la función: .....
+-- describir qué hace la función: devuelve las publicaciones que le gustaron a un determinado usuario
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
-publicacionesQueLeGustanA = undefined
+publicacionesQueLeGustanA (us,rs,ps) u = tusLikes (publicaciones (us,rs,ps)) u -- FALTA PROBAR LOS CASOS DE REPETICION
+
+-- Funciones Auxiliares
+
+tusLikes :: [Publicacion] -> Usuario -> [Publicacion]
+tusLikes [] _ = []
+tusLikes (x:xs) u | null (x:xs) = [x]
+                  | pertenece u (likesDePublicacion x) = x : tusLikes xs u
+                  | otherwise = tusLikes xs u
+
+pertenece :: (Eq t) => t -> [t] -> Bool
+pertenece a [] = False
+pertenece a (x:xs) | a == x = True
+                   | otherwise = pertenece a xs
 
 -- describir qué hace la función: .....
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
