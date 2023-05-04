@@ -133,9 +133,10 @@ cabeza :: [a] -> a
 cabeza [] = []
 cabeza (x:xs) = x
 
--- describir qué hace la función: .....
+-- describir qué hace la función: si dentro de la red hay un usuario con mas de un millon de amigos devuelve True
 estaRobertoCarlos :: RedSocial -> Bool
-estaRobertoCarlos = undefined
+estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 1000000 = True
+                             | otherwise = False
 
 -- describir qué hace la función: .....
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
