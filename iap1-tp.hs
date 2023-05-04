@@ -121,7 +121,11 @@ listaDeAmigos u (x:xs) | u == fst x = snd x : listaDeAmigos u xs
 
 -- describir qué hace la función: .....
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
-cantidadDeAmigos = undefined
+cantidadDeAmigos (us,rs,ps) (id, nombre) = contarAmigos (amigosDe (us,rs,ps) (id, nombre))
+
+contarAmigos :: [Usuario] -> Int
+contarAmigos []= 0
+contarAmigos (x:xs) = 1+ contarAmigos xs
 
 -- describir qué hace la función: .....
 usuarioConMasAmigos :: RedSocial -> Usuario
