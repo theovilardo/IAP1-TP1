@@ -219,14 +219,20 @@ existeSecuenciaDeAmigos (us,rs,ps) a b | amigosDe (us,rs,ps) a == amigosDe (us,r
 concatenaAmistades :: [Usuario] -> [Usuario] -> [Usuario]               -- Su funcion es unir las listas de amigos de cada usuario (sin repetir usuarios) 
 concatenaAmistades (x:xs) (y:ys) = eliminaRepetidos ((x:xs) ++ (y:ys))
 
-amigosEnComun :: RedSocial -> [Usuario] -> [Usuario] -> Bool          -- Chequea la cadena de amistades entre los amigos de los usuarios ingresados
+
+amigosEnComun :: RedSocial -> [Usuario] -> [Usuario] -> Bool            -- Chequea la cadena de amistades entre los amigos de los usuarios ingresados
 amigosEnComun (_,_,_) [] _ = False
 amigosEnComun (_,_,_) _ [] = False
 amigosEnComun (us,rs,ps) (x:xs) (a:bc) | mismosElementos (x:xs) (a:bc) || mismosElementos (a:bc) (x:xs) = True
                                        | pertenece x (a:bc) = True
-                                       | sonAmigos (us,rs,ps) z (head zs) = True
-                                       | otherwise = algunoEsAmigo (us,rs,ps) (z:zs)
+                                       | otherwise = (algunoEsAmigo (us,rs,ps) (z:zs)) || (algunoEsAmigoFix (us,rs,ps) z zs)
                                        where (z:zs) = concatenaAmistades (x:xs) (a:bc)
+
+
+algunoEsAmigoFix :: RedSocial -> Usuario -> [Usuario] -> Bool                 -- version 2, esta debe contemplar todos los casos, en resumen hace que el primer valor de la lista de amistades (la que se genera en concatenaAmistades) se evalua con todos los valores que siguen dentro de la lista
+algunoEsAmigoFix (_,_,_) _ [] = False
+algunoEsAmigoFix (us,rs,ps) a (x:xs) | sonAmigos (us,rs,ps) a x = True
+                                     | otherwise = algunoEsAmigoFix (us,rs,ps) x xs
 
 algunoEsAmigo :: RedSocial -> [Usuario] -> Bool       -- Su funcion es chequear dentro de la lista de amistades de ambos usuarios (la que se crea con concatenaAmistades) si existe alguna relacion, si es asi, devolvera True
 algunoEsAmigo (us,rs,ps) [] = False
