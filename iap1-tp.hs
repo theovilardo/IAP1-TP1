@@ -208,6 +208,37 @@ perteneceLike (y:ys) (x:xs) | (y:ys) == [y] && pertenece y (x:xs) = True
 perteneceLike (y:ys) (x:xs) | pertenece y (x:xs) = perteneceLike ys (x:xs)
                             | otherwise = False
 
--- describir qué hace la función: EJERCICIO 10 -> Que diablos es esto
+-- describir qué hace la función: EJERCICIO 10 -> Que diablos es esto                 -- Devuelve true si en la red existe una cadena de amistades
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos = undefined
+existeSecuenciaDeAmigos (us,rs,ps) a b | amigosDe (us,rs,ps) a == amigosDe (us,rs,ps) b = True
+                                       | amigosEnComun (us,rs,ps) (amigosDe (us,rs,ps) a) (amigosDe (us,rs,ps) b) = True
+                                       | otherwise = False
+
+-- Funciones Auxiliares
+
+concatenaAmistades :: [Usuario] -> [Usuario] -> [Usuario]               -- Su funcion es unir las listas de amigos de cada usuario (sin repetir usuarios) 
+concatenaAmistades (x:xs) (y:ys) = eliminaRepetidos ((x:xs) ++ (y:ys))
+
+amigosEnComun :: RedSocial -> [Usuario] -> [Usuario] -> Bool          -- Chequea la cadena de amistades entre los amigos de los usuarios ingresados
+amigosEnComun (_,_,_) [] _ = False
+amigosEnComun (_,_,_) _ [] = False
+amigosEnComun (us,rs,ps) (x:xs) (a:bc) | mismosElementos (x:xs) (a:bc) || mismosElementos (a:bc) (x:xs) = True
+                                       | pertenece x (a:bc) = True
+                                       | sonAmigos (us,rs,ps) z (head zs) = True
+                                       | otherwise = algunoEsAmigo (us,rs,ps) (z:zs)
+                                       where (z:zs) = concatenaAmistades (x:xs) (a:bc)
+
+algunoEsAmigo :: RedSocial -> [Usuario] -> Bool       -- Su funcion es chequear dentro de la lista de amistades de ambos usuarios (la que se crea con concatenaAmistades) si existe alguna relacion, si es asi, devolvera True
+algunoEsAmigo (us,rs,ps) [] = False
+algunoEsAmigo (us,rs,ps) (x:y:ys) | sonAmigos (us,rs,ps) x y = True
+                                  | otherwise = algunoEsAmigo (us,rs,ps) (y:ys)
+
+sonAmigos :: RedSocial -> Usuario -> Usuario -> Bool                                                    -- Chequea si dos usuarios dentro de la misma red son amigos
+sonAmigos (us,rs,ps) a b = sonAmigosMutuos (us,rs,ps) (amigosDe (us,rs,ps) a) (amigosDe (us,rs,ps) b)
+
+sonAmigosMutuos :: RedSocial -> [Usuario] -> [Usuario] -> Bool                              -- Mas que nada es una dependencia para sonAmigos, por ahi se puede simplificar
+sonAmigosMutuos (_,_,_) [] [] = False
+sonAmigosMutuos (_,_,_) [] _ = False
+sonAmigosMutuos (_,_,_) _ [] = False
+sonAmigosMutuos (us,rs,ps) (x:xs) (y:ys) | pertenece x (y:ys) = True
+                                         | otherwise = sonAmigosMutuos (us,rs,ps) xs (y:ys)
