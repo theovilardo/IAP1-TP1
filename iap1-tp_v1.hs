@@ -249,3 +249,34 @@ sonAmigosMutuos (_,_,_) [] _ = False
 sonAmigosMutuos (_,_,_) _ [] = False
 sonAmigosMutuos (us,rs,ps) (x:xs) (y:ys) | pertenece x (y:ys) = True
                                          | otherwise = sonAmigosMutuos (us,rs,ps) xs (y:ys)
+
+
+--Idea2
+--La idea es crear una lista aparte que contiene a todos los amigos del u1 y a los amigos de sus amigos y a los amigos de los amigos de sus amigos...
+--Entonces, si u2 esta relacionado con el u1 a través de alguna de sus amistades, u2 tendría que aparecer en esa lista.
+
+existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
+existeSecuenciaDeAmigos rs u1 u2 | (amigosDe rs u1) == [] || (amigosDe rs u2) == [] = False
+                                 | pertenece u1 (amigosDe rs u2) = True
+                                 | pertenece u2 (listaDeAmigos2 rs u1 (amigosDe rs u1)) = True
+                                 | otherwise = False
+                                 
+
+listaDeAmigos2 :: RedSocial -> Usuario -> [Usuario] -> [Usuario]
+listaDeAmigos2 rs u1 [] = []
+listaDeAmigos2 rs u1 (x:xs) = [x] ++ (amigosDeAmigos rs (amigosDe rs x) (u1:x:[])) ++ listaDeAmigos2 rs u1 xs 
+
+--amigosDeAmigos recibe 2 listas. La primera son los amigos de la cabeza de la lista que aparece en la función anterior.
+--La segunda es una lista aparte que contiene a todos los usuarios a los que yo ya me fijé quienes eran sus amigos, esto es para evitar un bucle infinito.
+--La función quitar del where es para quitar a todos los elementos de esa lista de la lista de amigos del usuario
+
+amigosDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
+amigosDeAmigos rs [] ys = []
+amigosDeAmigos rs (x:xs) ys = [x] ++ amigosDeAmigos rs (quitar ys(amigosDe rs x)) (x:ys) ++ amigosDeAmigos rs xs ys
+ where quitar (y:ys) [] = []
+       quitar [] (z:zs) = (z:zs)
+       quitar (y:ys) (z:zs) | (y:ys) == [y] = quita y (z:zs)
+                            | otherwise = quitar ys (quita y (z:zs))
+        where quita _ [] = []
+              quita y (z:zs) | y == z = quita y zs
+                             | otherwise = z : quita y zs
