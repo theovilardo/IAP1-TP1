@@ -128,7 +128,7 @@ cantidadDeAcu rs (x:xs) | null (x:xs) = x
 
 -- Reemplazo de head por las dudas:
 cabeza :: [a] -> a
-cabeza [] = []
+cabeza [x] = x
 cabeza (x:xs) = x
 
 -- describir qué hace la función: EJERCICIO 5 -> Si dentro de la red hay un usuario con mas de un millon de amigos devuelve True, sino False
