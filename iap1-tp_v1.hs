@@ -208,52 +208,10 @@ perteneceLike (y:ys) (x:xs) | (y:ys) == [y] && pertenece y (x:xs) = True
 perteneceLike (y:ys) (x:xs) | pertenece y (x:xs) = perteneceLike ys (x:xs)
                             | otherwise = False
 
--- describir qué hace la función: EJERCICIO 10 -> Que diablos es esto                 -- Devuelve true si en la red existe una cadena de amistades
-existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos (us,rs,ps) a b | amigosDe (us,rs,ps) a == amigosDe (us,rs,ps) b = True
-                                       | amigosEnComun (us,rs,ps) (amigosDe (us,rs,ps) a) (amigosDe (us,rs,ps) b) = True
-                                       | otherwise = False
-
--- Funciones Auxiliares
-
-concatenaAmistades :: [Usuario] -> [Usuario] -> [Usuario]               -- Su funcion es unir las listas de amigos de cada usuario (sin repetir usuarios) 
-concatenaAmistades (x:xs) (y:ys) = eliminaRepetidos ((x:xs) ++ (y:ys))
-
-
-amigosEnComun :: RedSocial -> [Usuario] -> [Usuario] -> Bool            -- Chequea la cadena de amistades entre los amigos de los usuarios ingresados
-amigosEnComun (_,_,_) [] _ = False
-amigosEnComun (_,_,_) _ [] = False
-amigosEnComun (us,rs,ps) (x:xs) (a:bc) | mismosElementos (x:xs) (a:bc) || mismosElementos (a:bc) (x:xs) = True
-                                       | pertenece x (a:bc) = True
-                                       | algunoEsAmigoFix (us,rs,ps) z zs = True
-                                       | otherwise = algunoEsAmigoFix (us,rs,ps) (head zs) (tail zs)
-                                       where (z:zs) = concatenaAmistades (x:xs) (a:bc)
-
-
-algunoEsAmigoFix :: RedSocial -> Usuario -> [Usuario] -> Bool                 -- version 2, esta debe contemplar todos los casos, en resumen hace que el primer valor de la lista de amistades (la que se genera en concatenaAmistades) se evalua con todos los valores que siguen dentro de la lista
-algunoEsAmigoFix (_,_,_) _ [] = False
-algunoEsAmigoFix (us,rs,ps) a (x:xs) | sonAmigos (us,rs,ps) a x = True
-                                     | otherwise = algunoEsAmigoFix (us,rs,ps) a xs
-
-algunoEsAmigo :: RedSocial -> [Usuario] -> Bool       -- Su funcion es chequear dentro de la lista de amistades de ambos usuarios (la que se crea con concatenaAmistades) si existe alguna relacion, si es asi, devolvera True
-algunoEsAmigo (us,rs,ps) [] = False
-algunoEsAmigo (us,rs,ps) (x:y:ys) | sonAmigos (us,rs,ps) x y = True
-                                  | otherwise = algunoEsAmigo (us,rs,ps) (y:ys)
-
-sonAmigos :: RedSocial -> Usuario -> Usuario -> Bool                                                    -- Chequea si dos usuarios dentro de la misma red son amigos
-sonAmigos (us,rs,ps) a b = sonAmigosMutuos (us,rs,ps) (amigosDe (us,rs,ps) a) (amigosDe (us,rs,ps) b)
-
-sonAmigosMutuos :: RedSocial -> [Usuario] -> [Usuario] -> Bool                              -- Mas que nada es una dependencia para sonAmigos, por ahi se puede simplificar
-sonAmigosMutuos (_,_,_) [] [] = False
-sonAmigosMutuos (_,_,_) [] _ = False
-sonAmigosMutuos (_,_,_) _ [] = False
-sonAmigosMutuos (us,rs,ps) (x:xs) (y:ys) | pertenece x (y:ys) = True
-                                         | otherwise = sonAmigosMutuos (us,rs,ps) xs (y:ys)
-
-
---Idea2
---La idea es crear una lista aparte que contiene a todos los amigos del u1 y a los amigos de sus amigos y a los amigos de los amigos de sus amigos...
---Entonces, si u2 esta relacionado con el u1 a través de alguna de sus amistades, u2 tendría que aparecer en esa lista.
+-- describir qué hace la función: EJERCICIO 10 -> Devuelve true si en la red existe una cadena de amistades
+-- Explicacion:
+-- La idea es crear una lista aparte que contiene a todos los amigos del u1 y a los amigos de sus amigos y a los amigos de los amigos de sus amigos...
+-- Entonces, si u2 esta relacionado con el u1 a través de alguna de sus amistades, u2 tendría que aparecer en esa lista.
 
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos rs u1 u2 | (amigosDe rs u1) == [] || (amigosDe rs u2) == [] = False
@@ -266,9 +224,9 @@ listaDeAmigos2 :: RedSocial -> Usuario -> [Usuario] -> [Usuario]
 listaDeAmigos2 rs u1 [] = []
 listaDeAmigos2 rs u1 (x:xs) = [x] ++ (amigosDeAmigos rs (amigosDe rs x) (u1:x:[])) ++ listaDeAmigos2 rs u1 xs 
 
---amigosDeAmigos recibe 2 listas. La primera son los amigos de la cabeza de la lista que aparece en la función anterior.
---La segunda es una lista aparte que contiene a todos los usuarios a los que yo ya me fijé quienes eran sus amigos, esto es para evitar un bucle infinito.
---La función quitar del where es para quitar a todos los elementos de esa lista de la lista de amigos del usuario
+-- amigosDeAmigos recibe 2 listas. La primera son los amigos de la cabeza de la lista que aparece en la función anterior.
+-- La segunda es una lista aparte que contiene a todos los usuarios a los que yo ya me fijé quienes eran sus amigos, esto es para evitar un bucle infinito.
+-- La función quitar del where es para quitar a todos los elementos de esa lista de la lista de amigos del usuario
 
 amigosDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 amigosDeAmigos rs [] ys = []
