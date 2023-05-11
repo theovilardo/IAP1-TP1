@@ -145,8 +145,8 @@ tieneUnSeguidorFiel (us,rs,ps) u = likesPertenecen (us,rs,ps) (quitar u (usuario
 
 -- Funciones Auxiliares
 quitar :: (Eq t) => t -> [t] -> [t]
-quitar a (x:xs) | null (x:xs) = []
-                | not (pertenece a (x:xs)) = x:xs
+quitar a [] = []
+quitar a (x:xs) | not (pertenece a (x:xs)) = x:xs
                 | a == x = xs 
                 | otherwise = x : quitar a xs
 
