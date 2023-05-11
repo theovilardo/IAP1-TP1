@@ -152,9 +152,14 @@ listaEnLista (x:xs) y = pertenece x y && listaEnLista xs y
 
 -- describir qué hace la función: EJERCICIO 9 -> Devuelve True si existe un usuario que le haya dado like a todas las publicaciones hechas por el usuario ingresado
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
-tieneUnSeguidorFiel (us,rs,ps) u = likesPertenecen (us,rs,ps) (usuarios (us,rs,ps)) (publicacionesDe (us,rs,ps) u)
+tieneUnSeguidorFiel (us,rs,ps) u = likesPertenecen (us,rs,ps) (quitar u (usuarios (us,rs,ps))) (publicacionesDe (us,rs,ps) u)
 
 -- Funciones Auxiliares
+quitar :: (Eq t) => t -> [t] -> [t]
+quitar a (x:xs) | null (x:xs) = []
+                | not (pertenece a (x:xs)) = x:xs
+                | a == x = xs 
+                | otherwise = x : quitar a xs
 
 likesPertenecen :: RedSocial -> [Usuario] -> [Publicacion] -> Bool
 likesPertenecen (_,_,_) [] _ = False
