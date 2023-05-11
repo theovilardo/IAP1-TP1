@@ -81,6 +81,7 @@ usuarioConMasAmigos (us,rs,ps) = cantidadDeAcu (us,rs,ps) (usuarios (us,rs,ps))
 
 -- Funciones Auxiliares
 cantidadDeAcu :: RedSocial -> [Usuario] -> Usuario
+cantidadDeAcu (us,[],ps) (x:xs) = x
 cantidadDeAcu rs (x:xs) | null (x:xs) = x
                         | cantidadDeAmigos (rs) x > cantidadDeAmigos (rs) (head xs) = x
                         | otherwise = cantidadDeAcu rs xs
