@@ -48,14 +48,12 @@ nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)
 
 proyectarNombres :: [Usuario] -> [String]
 proyectarNombres [] = []
-proyectarNombres (x:xs) = snd x : proyectarNombres xs
+proyectarNombres (x:xs) = nombreDeUsuario x : proyectarNombres xs
 
 eliminaRepetidos :: Eq a => [a] -> [a]
 eliminaRepetidos [] = []
-eliminaRepetidos (x:xs) = x : eliminaRepetidos (quita x xs)
-  where quita _ [] = []
-        quita y (z:zs) | y == z    = quita y zs
-                       | otherwise = z : quita y zs
+eliminaRepetidos (x:xs) = x : eliminaRepetidos (quitar x xs)
+
 
 -- describir qué hace la función: EJERCICIO 2 -> Devuelve la lista de amigos que tiene el usuario ingresado (dentro de la red)
 --Le falta función para eliminar los repetidos
@@ -71,11 +69,11 @@ listaDeAmigos u (x:xs) | u == fst x = snd x : listaDeAmigos u xs
 
 -- describir qué hace la función: EJERCICIO 3 -> Devuelve la cantidad de amigos que tiene el usuario ingresado (dentro de la red)
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
-cantidadDeAmigos (us,rs,ps) (id, nombre) = contarAmigos (amigosDe (us,rs,ps) (id, nombre))
+cantidadDeAmigos (us,rs,ps) u = longitud (amigosDe (us,rs,ps) u)
 
-contarAmigos :: [Usuario] -> Int
-contarAmigos []= 0
-contarAmigos (x:xs) = 1+ contarAmigos xs
+longitud :: (Eq t) => [t] -> Int 
+longitud [] = 0
+longitud (x:xs) = 1 + longitud xs
 
 -- describir qué hace la función: EJERCICIO 4 -> Dada la red social, devuelve el usuario con mas amigos
 usuarioConMasAmigos :: RedSocial -> Usuario
@@ -94,7 +92,7 @@ cabeza (x:xs) = x
 
 -- describir qué hace la función: EJERCICIO 5 -> Si dentro de la red hay un usuario con mas de un millon de amigos devuelve True, sino False
 estaRobertoCarlos :: RedSocial -> Bool
-estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 1000000 = True
+estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 10 = True
                              | otherwise = False
 
 -- describir qué hace la función: EJERCICIO 6 -> devuelve las publicaciones de un usuario dentro de la red social
@@ -128,27 +126,17 @@ pertenece a (x:xs) | a == x = True
 
 -- describir qué hace la función: EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones #Actualizado para la version 2.1 del TP
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
-lesGustanLasMismasPublicaciones (us,rs,ps) a b | mismaCantidad (publicacionesQueLeGustanA (us,rs,ps) a) (publicacionesQueLeGustanA (us,rs,ps) b) && mismosElementos (publicacionesQueLeGustanA (us,rs,ps) a) (publicacionesQueLeGustanA (us,rs,ps) b) = True
+lesGustanLasMismasPublicaciones (us,rs,ps) a b | longitud (publicacionesQueLeGustanA (us,rs,ps) a) == longitud (publicacionesQueLeGustanA (us,rs,ps) b) && mismosElementos (publicacionesQueLeGustanA (us,rs,ps) a) (publicacionesQueLeGustanA (us,rs,ps) b) = True
                                                | otherwise = False
 
 -- Funciones Auxiliares
 
-longitud :: Eq t => [t] -> Integer
-longitud (x:xs) | null (x:xs) = 0
-                | (x:xs) == [x] = 1
-                | otherwise = 1 + longitud xs
-
-mismaCantidad :: (Eq t) => [t] -> [t] -> Bool
-mismaCantidad a b | a == b = True
-                  | longitud a == longitud b = True
-                  | otherwise = False
-
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
-mismosElementos a b = listaEnLista a b && listaEnLista b a
-
-listaEnLista :: (Eq t) => [t] -> [t] -> Bool
-listaEnLista [] y = True
-listaEnLista (x:xs) y = pertenece x y && listaEnLista xs y
+mismosElementos [] _ = False
+mismosElementos _ [] = False
+mismosElementos (x:xs) ys | pertenece x ys && (x:xs) == [x] = True
+                          | not(pertenece x ys) = False
+                          | otherwise = mismosElementos xs ys 
 
 -- describir qué hace la función: EJERCICIO 9 -> Devuelve True si existe un usuario que le haya dado like a todas las publicaciones hechas por el usuario ingresado
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
@@ -196,11 +184,8 @@ listaDeAmigos2 rs u1 (x:xs) = [x] ++ (amigosDeAmigos rs (amigosDe rs x) (u1:x:[]
 
 amigosDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 amigosDeAmigos rs [] ys = []
-amigosDeAmigos rs (x:xs) ys = [x] ++ amigosDeAmigos rs (quitar ys(amigosDe rs x)) (x:ys) ++ amigosDeAmigos rs xs ys
- where quitar (y:ys) [] = []
-       quitar [] (z:zs) = (z:zs)
-       quitar (y:ys) (z:zs) | (y:ys) == [y] = quita y (z:zs)
-                            | otherwise = quitar ys (quita y (z:zs))
-        where quita _ [] = []
-              quita y (z:zs) | y == z = quita y zs
-                             | otherwise = z : quita y zs
+amigosDeAmigos rs (x:xs) ys = [x] ++ amigosDeAmigos (us,rs,ps) (quitarLista ys (amigosDe rs x)) (x:ys) ++ amigosDeAmigos (us,rs,ps) xs ys
+ where quitarLista (y:ys) [] = []
+       quitarLista [] (z:zs) = (z:zs)
+       quitarLista (y:ys) (z:zs) | (y:ys) == [y] = quitar y (z:zs)
+                                 | otherwise = quitarLista ys (quitar y (z:zs))
