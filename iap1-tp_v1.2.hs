@@ -40,6 +40,27 @@ likesDePublicacion (_, _, us) = us
 
 -- Ejercicios
 
+-- Funciones auxiliares que se utilizan en distintos ejercicios
+
+eliminaRepetidos :: (Eq t) => [t] -> [t]
+eliminaRepetidos [] = []
+eliminaRepetidos (x:xs) = x : eliminaRepetidos (quitar x xs)
+
+longitud :: (Eq t) => [t] -> Int 
+longitud [] = 0
+longitud (x:xs) = 1 + longitud xs
+
+pertenece :: (Eq t) => t -> [t] -> Bool
+pertenece a [] = False
+pertenece a (x:xs) | a == x = True
+                   | otherwise = pertenece a xs
+
+quitar :: (Eq t) => t -> [t] -> [t]
+quitar a [] = []
+quitar a (x:xs) | not (pertenece a (x:xs)) = x:xs
+                | a == x = xs 
+                | otherwise = x : quitar a xs
+
 -- describir qué hace la función: EJERCICIO 1 -> Devuelve los nombres de usuario de la red social
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)))
@@ -49,11 +70,6 @@ nombresDeUsuarios (a,b,c) = eliminaRepetidos (proyectarNombres (usuarios (a,b,c)
 proyectarNombres :: [Usuario] -> [String]
 proyectarNombres [] = []
 proyectarNombres (x:xs) = nombreDeUsuario x : proyectarNombres xs
-
-eliminaRepetidos :: Eq a => [a] -> [a]
-eliminaRepetidos [] = []
-eliminaRepetidos (x:xs) = x : eliminaRepetidos (quitar x xs)
-
 
 -- describir qué hace la función: EJERCICIO 2 -> Devuelve la lista de amigos que tiene el usuario ingresado (dentro de la red)
 --Le falta función para eliminar los repetidos
@@ -71,10 +87,6 @@ listaDeAmigos u (x:xs) | u == fst x = snd x : listaDeAmigos u xs
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
 cantidadDeAmigos (us,rs,ps) u = longitud (amigosDe (us,rs,ps) u)
 
-longitud :: (Eq t) => [t] -> Int 
-longitud [] = 0
-longitud (x:xs) = 1 + longitud xs
-
 -- describir qué hace la función: EJERCICIO 4 -> Dada la red social, devuelve el usuario con mas amigos
 usuarioConMasAmigos :: RedSocial -> Usuario
 usuarioConMasAmigos (us,rs,ps) = cantidadDeAcu (us,rs,ps) (usuarios (us,rs,ps))
@@ -85,11 +97,6 @@ cantidadDeAcu (us,[],ps) (x:xs) = x
 cantidadDeAcu rs (x:xs) | null (x:xs) = x
                         | cantidadDeAmigos (rs) x > cantidadDeAmigos (rs) (head xs) = x
                         | otherwise = cantidadDeAcu rs xs
-
--- Reemplazo de head por las dudas:
-cabeza :: [a] -> a
-cabeza [x] = x
-cabeza (x:xs) = x
 
 -- describir qué hace la función: EJERCICIO 5 -> Si dentro de la red hay un usuario con mas de un millon de amigos devuelve True, sino False
 estaRobertoCarlos :: RedSocial -> Bool
@@ -120,11 +127,6 @@ tusLikes (x:xs) u | null (x:xs) = [x]
                   | pertenece u (likesDePublicacion x) = x : tusLikes xs u
                   | otherwise = tusLikes xs u
 
-pertenece :: (Eq t) => t -> [t] -> Bool
-pertenece a [] = False
-pertenece a (x:xs) | a == x = True
-                   | otherwise = pertenece a xs
-
 -- describir qué hace la función: EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones #Actualizado para la version 2.1 del TP
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
 lesGustanLasMismasPublicaciones (us,rs,ps) a b | longitud (publicacionesQueLeGustanA (us,rs,ps) a) == longitud (publicacionesQueLeGustanA (us,rs,ps) b) && mismosElementos (publicacionesQueLeGustanA (us,rs,ps) a) (publicacionesQueLeGustanA (us,rs,ps) b) = True
@@ -144,11 +146,6 @@ tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel (us,rs,ps) u = likesPertenecen (us,rs,ps) (quitar u (usuarios (us,rs,ps))) (publicacionesDe (us,rs,ps) u)
 
 -- Funciones Auxiliares
-quitar :: (Eq t) => t -> [t] -> [t]
-quitar a [] = []
-quitar a (x:xs) | not (pertenece a (x:xs)) = x:xs
-                | a == x = xs 
-                | otherwise = x : quitar a xs
 
 likesPertenecen :: RedSocial -> [Usuario] -> [Publicacion] -> Bool
 likesPertenecen (_,_,_) [] _ = False
