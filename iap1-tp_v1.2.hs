@@ -47,6 +47,10 @@ eliminaRepetidos :: (Eq t) => [t] -> [t]
 eliminaRepetidos [] = []
 eliminaRepetidos (x:xs) = x : eliminaRepetidos (quitar x xs)
 
+--eliminaRepetidos (x:xs) | pertenece x xs = eliminaRepetidos xs (elimina la primera aparicion de x)
+--                        | otherwise = x: eliminaRepetidos xs (si x ya no tiene repetidos, lo agrega y avanza con el siguiente x)
+-- asi chequea todo el tiempo si el elemento se vuelve a repetir en la lista mas de una vez. (Igual esta funcion no estaria usando el quitar)
+
 longitud :: (Eq t) => [t] -> Int 
 longitud [] = 0
 longitud (x:xs) = 1 + longitud xs
@@ -58,7 +62,7 @@ pertenece a (x:xs) | a == x = True
 
 quitar :: (Eq t) => t -> [t] -> [t]
 quitar a [] = []
-quitar a (x:xs) | not (pertenece a (x:xs)) = x:xs
+quitar a (x:xs) | not (pertenece a (x:xs)) = x:xs 
                 | a == x = xs 
                 | otherwise = x : quitar a xs
 
