@@ -49,8 +49,8 @@ testdeamigosDe = test [
     "Caso 3: Usuario sin amigos en una red con solo un usuario" ~: (amigosDe redD (3, "Pedro") ) ~?= [],
     "Caso 4: Usuario con un amigo" ~: (amigosDe redB (3, "Pedro")) ~?= [(2, "Natalia")],
     "Caso 5: Usuario con más de un amigo" ~: (amigosDe redA (1, "Juan")) ~?= [(2, "Natalia"),(4, "Mariela")],
-    "Caso 6: Usuario con amigo del mismo nombre" ~: (amigosDe redC (5, "Natalia")) ~?= [(2, "Natalia")],
-    "Caso 7: Usuario con amigos del mismo nombre" ~: (amigosDe redF (5, "Natalia")) ~?= [(2, "Natalia"),(11, "Natalia")]
+    "Caso 6: Usuario con amigo del mismo nombre" ~: (amigosDe redC (5, "Natalia")) ~?= [(2,"Natalia"),(4,"Mariela"),(6,"Ricardo")],
+    "Caso 7: Usuario con amigos del mismo nombre" ~: (amigosDe redF (5, "Natalia")) ~?= [(9,"Lucia"),(11,"Natalia"),(2,"Natalia")]
     ]
 
 run3= runTestTT testcantidadDeAmigos
@@ -94,8 +94,23 @@ testPublicacionesQueLeGustanA= test[
     ]
 expectAny actual expected = elem actual expected ~? ("expected any of: " ++ show expected ++ "\n but got: " ++ show actual)
 
+run8= runTestTT testlesGustanLasMismasPublicaciones
+testlesGustanLasMismasPublicaciones = test[
+    "Caso 1: Dos usuarios que no le dieron like a ninguna publicacion" ~: (lesGustanLasMismasPublicaciones redF (usuario3) (usuario7)) ~?= True,
+    "Caso 2: Dos usuarios que le dieron like a las mismas publicaciones y a la misma cantidad" ~: (lesGustanLasMismasPublicaciones redH (usuario5) (usuario2)) ~?= True,
+    "Caso 3: Dos usuario le dieron like a la misma cantidad de publicaciones pero comparten solo una" ~: (lesGustanLasMismasPublicaciones redB (usuario2) (usuario5)) ~?= False,
+    "Caso 4: Un usuario le dio like a las mismas publicaciones que otro, pero a uno le gusto una publicacion mas" ~: (lesGustanLasMismasPublicaciones redH (usuario7) (usuario6)) ~?= False,
+    "Caso 5: Se ingresa dos veces el mismo usuario" ~: (lesGustanLasMismasPublicaciones redH (usuario4) (usuario4)) ~?= True
+    ]
+
+--run9 = runTestTT testtieneUnSeguidorFiel
+--testtieneUnSeguidorFiel = test [
+
+--]
+
 -- Ejemplos
 
+usuario1 :: (Integer, String)
 usuario1 = (1, "Juan")
 usuario2 = (2, "Natalia")
 usuario3 = (3, "Pedro")
@@ -133,6 +148,8 @@ relacion9_4 = (usuario4, usuario9)
 relacion10_9 =(usuario10,usuario9)
 relacion11_9 = (usuario11,usuario9)
 relacion12_9 = (usuario9,usuario12)
+relacion11_5 = (usuario5, usuario11)
+
 
 
 publicacion1_1 = (usuario1, "Este es mi primer post", [usuario2, usuario4])
@@ -143,13 +160,21 @@ publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])
 
 publicacion2_1 = (usuario2, "Hello World", [usuario4])
 publicacion2_2 = (usuario2, "Good Bye World", [usuario1, usuario4])
+publicacion2_3 = (usuario2, "Que onda", [usuario4, usuario1]) -- agregada recien
 
 publicacion3_1 = (usuario3, "Lorem Ipsum", [])
 publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])
 publicacion3_3 = (usuario3, "consectetur adipiscing elit", [usuario2, usuario5])
+publicacion3_4 = (usuario3, "Allahu Akbar", [usuario6, usuario7])
 publicacion4_1 = (usuario4, "I am Alice. Not", [usuario1, usuario2])
 publicacion4_2 = (usuario4, "I am Bob", [])
 publicacion4_3 = (usuario4, "Just kidding, i am Mariela", [usuario1, usuario3])
+publicacion4_4 = (usuario2, "Francia Segundo", [usuario4, usuario1]) -- agregada recien
+publicacion4_5 = (usuario4, "Quien engaño a Roger Rabbit", [usuario7]) -- agregada recien
+
+
+publicacion6_1 = (usuario6, "Apruebenme", [usuario6, usuario7, usuario3]) -- agregada recien
+
 
 -- redA
 usuariosA = [usuario1, usuario2, usuario3, usuario4]
@@ -165,7 +190,7 @@ redB = (usuariosB, relacionesB, publicacionesB)
 
 --redC 
 relacionesC = [relacion1_2, relacion2_3, relacion2_5, relacion3_4, relacion4_2, relacion4_5, relacion5_6, relacion6_7, relacion7_8,relacion9_4]
-usuariosC = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6]
+usuariosC = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9]
 publicacionesC = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_3]
 redC = (usuariosC, relacionesC, publicacionesC)
 
@@ -188,7 +213,7 @@ publicacionesE = [publicacion2_1,publicacion4_1]
 redE= (usuariosE, relacionesE, publicacionesE)
 
 --redF (Con muchas relaciones de amistad)
-relacionesF = [relacion1_9,relacion2_9, relacion9_3, relacion9_4, relacion5_9, relacion6_9, relacion7_9, relacion8_9, relacion10_9, relacion11_9, relacion12_9]
+relacionesF = [relacion1_9,relacion2_9, relacion9_3, relacion9_4, relacion5_9, relacion6_9, relacion7_9, relacion8_9, relacion10_9, relacion11_9, relacion12_9, relacion11_5, relacion2_5]
 usuariosF= [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11, usuario12]
 publicacionesF = [publicacion1_1, publicacion1_5]-- no olvidar agregar publis asi lo uso para el ejercicio de publis 6 o 7!!
 redF = (usuariosF, relacionesF, publicacionesF)
@@ -198,3 +223,9 @@ usuariosG =[usuario7, usuario12]
 relacionesG = []
 publicacionesG = []--
 redG = (usuariosG, relacionesG, publicacionesG)
+
+-- redH ()
+relacionesH = [relacion3_4]
+usuariosH = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7]
+publicacionesH = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1]
+redH = (usuariosH, relacionesH, publicacionesH)
