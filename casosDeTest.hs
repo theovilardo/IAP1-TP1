@@ -132,9 +132,9 @@ usuario2 = (2, "Natalia")
 usuario3 = (3, "Pedro")
 usuario4 = (4, "Mariela")
 usuario5 = (5, "Natalia")
-usuario6 = (6, "Ricardo") -- añadido para el ej10
-usuario7 = (7, "Armando") -- añadido para el ej10
-usuario8 = (8, "Alberto") -- añadido para el ej10
+usuario6 = (6, "Ricardo") 
+usuario7 = (7, "Armando") 
+usuario8 = (8, "Alberto") 
 usuario9 = (9, "Lucia")
 usuario10 = (10, "Natalia")
 usuario11 = (11, "Natalia")
@@ -153,13 +153,13 @@ relacion2_4 = (usuario2, usuario4)
 relacion2_5 = (usuario2, usuario5)
 relacion2_9 = (usuario9, usuario2)
 relacion3_4 = (usuario4, usuario3)
-relacion4_5 = (usuario4, usuario5) -- agregada para probar transitividad
+relacion4_5 = (usuario4, usuario5) 
 relacion4_2 = (usuario4, usuario2)
-relacion5_6 = (usuario5, usuario6) -- agregada para probar transitividad x2
+relacion5_6 = (usuario5, usuario6) 
 relacion5_9 = (usuario9, usuario5)
-relacion6_7 = (usuario6, usuario7) -- agregada para probar transitividad x3
+relacion6_7 = (usuario6, usuario7)
 relacion6_9 = (usuario9, usuario6) 
-relacion7_8 = (usuario7, usuario8) -- agregada para probar transitividad x4
+relacion7_8 = (usuario7, usuario8) 
 relacion7_9 = (usuario9, usuario7)
 relacion8_9 = (usuario9, usuario8)
 relacion9_3 = (usuario9, usuario3)
@@ -180,7 +180,7 @@ publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])
 
 publicacion2_1 = (usuario2, "Hello World", [usuario4])
 publicacion2_2 = (usuario2, "Good Bye World", [usuario1, usuario4])
-publicacion2_3 = (usuario2, "Que onda", [usuario4, usuario1]) -- agregada recien
+publicacion2_3 = (usuario2, "Que onda", [usuario4, usuario1]) 
 
 publicacion3_1 = (usuario3, "Lorem Ipsum", [])
 publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])
@@ -189,11 +189,11 @@ publicacion3_4 = (usuario3, "Allahu Akbar", [usuario6, usuario7])
 publicacion4_1 = (usuario4, "I am Alice. Not", [usuario1, usuario2])
 publicacion4_2 = (usuario4, "I am Bob", [])
 publicacion4_3 = (usuario4, "Just kidding, i am Mariela", [usuario1, usuario3])
-publicacion4_4 = (usuario2, "Francia Segundo", [usuario4, usuario1]) -- agregada recien
-publicacion4_5 = (usuario4, "Quien engaño a Roger Rabbit", [usuario7]) -- agregada recien
+publicacion4_4 = (usuario2, "Francia Segundo", [usuario4, usuario1]) 
+publicacion4_5 = (usuario4, "Quien engaño a Roger Rabbit", [usuario7]) 
 
 
-publicacion6_1 = (usuario6, "Apruebenme", [usuario6, usuario7, usuario3]) -- agregada recien
+publicacion6_1 = (usuario6, "Apruebenme", [usuario6, usuario7, usuario3])
 
 publicacion10_1 = (usuario10, "A mi tambien!", [usuario10])
 publicacion10_2 = (usuario10, "Me too!", [usuario10])
@@ -256,16 +256,16 @@ redF = (usuariosF, relacionesF, publicacionesF)
 --redG (Con solo dos usuarios)
 usuariosG =[usuario7, usuario12]
 relacionesG = []
-publicacionesG = []--
+publicacionesG = []
 redG = (usuariosG, relacionesG, publicacionesG)
 
--- redH ()
+-- redH
 relacionesH = [relacion3_4]
 usuariosH = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7]
 publicacionesH = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1]
 redH = (usuariosH, relacionesH, publicacionesH)
 
--- redX (creada para el ejercicio 10 especificamente)
+-- redX
 relacionesX = [relacion1_3, relacion3_4, relacion4_5, relacion5_6, relacion6_7, relacion7_8,relacion9_4, relacion10_2]
 usuariosX = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11]
 publicacionesX = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1, publicacion13_1]
