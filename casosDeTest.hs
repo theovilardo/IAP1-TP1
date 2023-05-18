@@ -110,7 +110,6 @@ testlesGustanLasMismasPublicaciones = test[
 
 -- Ejemplos
 
-usuario1 :: (Integer, String)
 usuario1 = (1, "Juan")
 usuario2 = (2, "Natalia")
 usuario3 = (3, "Pedro")
