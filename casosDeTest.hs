@@ -267,6 +267,6 @@ redH = (usuariosH, relacionesH, publicacionesH)
 
 -- redX
 relacionesX = [relacion1_3, relacion3_4, relacion4_5, relacion5_6, relacion6_7, relacion7_8,relacion9_4, relacion10_2]
-usuariosX = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11]
+usuariosX = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11, usuario13]
 publicacionesX = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1, publicacion13_1]
 redX = (usuariosX, relacionesX, publicacionesX)
