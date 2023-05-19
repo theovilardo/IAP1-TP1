@@ -64,12 +64,13 @@ quitar a (x:xs) | not (pertenece a (x:xs)) = x:xs
                 | a == x = xs 
                 | otherwise = x : quitar a xs
 
-compartenElementos :: (Eq t) => [t] -> [t] -> Bool
-compartenElementos [] _ = False
-compartenElementos _ [] = False
-compartenElementos (x:xs) ys | pertenece x ys && (x:xs) == [x] = True
-                             | not(pertenece x ys) = False
-                             | otherwise = compartenElementos xs ys 
+-- Verifica si todos los elementos de una lista están contenidos en otra
+estaContenida :: (Eq t) => [t] -> [t] -> Bool
+estaContenida [] _ = False
+estaContenida _ [] = False
+estaContenida (x:xs) ys | pertenece x ys && (x:xs) == [x] = True
+                        | not(pertenece x ys) = False
+                        | otherwise = estaContenida xs ys 
 
 
 -- EJERCICIO 1 -> Devuelve un conjunto con los nombres de usuario de la red social
@@ -151,7 +152,7 @@ tusLikes (x:xs) u | null (x:xs) = [x]
 -- EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones #Actualizado para la version 2.1 del TP
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
 lesGustanLasMismasPublicaciones (us,rs,ps) u1 u2 | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == 0 && longitud (publicacionesQueLeGustanA (us,rs,ps) u2) == 0 = True
-                                                 | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == longitud (publicacionesQueLeGustanA (us,rs,ps) u2) && compartenElementos (publicacionesQueLeGustanA (us,rs,ps) u1) (publicacionesQueLeGustanA (us,rs,ps) u2) = True
+                                                 | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == longitud (publicacionesQueLeGustanA (us,rs,ps) u2) && estaContenida (publicacionesQueLeGustanA (us,rs,ps) u1) (publicacionesQueLeGustanA (us,rs,ps) u2) = True
                                                  | otherwise = False
 
 
@@ -164,7 +165,7 @@ tieneUnSeguidorFiel (us,rs,ps) u = algunoDioLikeATodas (us,rs,ps) (quitar u (usu
 algunoDioLikeATodas :: RedSocial -> [Usuario] -> [Publicacion] -> Bool
 algunoDioLikeATodas (_,_,_) [] _ = False
 algunoDioLikeATodas (us,rs,ps) _ [] = False
-algunoDioLikeATodas (us,rs,ps) (x:xs) (y:ys) | compartenElementos (y:ys) (publicacionesQueLeGustanA (us,rs,ps) x) = True
+algunoDioLikeATodas (us,rs,ps) (x:xs) (y:ys) | estaContenida (y:ys) (publicacionesQueLeGustanA (us,rs,ps) x) = True
                                              | otherwise = algunoDioLikeATodas (us,rs,ps) xs (y:ys)
 
  
