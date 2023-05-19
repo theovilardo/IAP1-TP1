@@ -39,7 +39,7 @@ testcatedra = test [
 run1= runTestTT testdeListadeNombresdeUsuarios
 testdeListadeNombresdeUsuarios = test [   
     "Caso 1: Con un usuario" ~: (nombresDeUsuarios redD) ~?= ["Pedro"], 
-    "Caso 2: Con más de un usuario" ~: (nombresDeUsuarios redC) ~?= ["Juan","Pedro","Mariela","Natalia","Ricardo","Armando","Alberto","Lucia"], --["Juan","Natalia","Pedro","Mariela","Ricardo"]
+    "Caso 2: Con más de un usuario" ~: (nombresDeUsuarios redC) ~?= ["Juan","Pedro","Mariela","Natalia","Ricardo","Armando","Alberto","Lucia"],
     "Caso 3: Sin usuarios" ~: (nombresDeUsuarios redVacia) ~?= [],
     "Caso 4: Con varios usuarios con el mismo nombre" ~: (nombresDeUsuarios redF) ~?= ["Juan","Pedro","Mariela","Armando","Alberto","Lucia","Natalia","Julian","Ricardo"] 
     ]
@@ -47,29 +47,29 @@ testdeListadeNombresdeUsuarios = test [
 run2= runTestTT testdeamigosDe
 testdeamigosDe = test [
     
-    "Caso 1: Usuario sin ningun amigo en una red social con amistades " ~: (amigosDe redB (5, "Natalia")) ~?= [],
-    "Caso 2: Usuario sin ningun amigo en una red social sin amistades" ~: (amigosDe redE (6, "Ricardo") ) ~?= [], 
-    "Caso 3: Usuario sin amigos en una red con solo un usuario" ~: (amigosDe redD (3, "Pedro") ) ~?= [],
-    "Caso 4: Usuario con un amigo" ~: (amigosDe redB (3, "Pedro")) ~?= [(2, "Natalia")],
-    "Caso 5: Usuario con más de un amigo" ~: (amigosDe redA (1, "Juan")) ~?= [(2, "Natalia"),(4, "Mariela")],
-    "Caso 6: Usuario con amigo del mismo nombre" ~: (amigosDe redC (5, "Natalia")) ~?= [(2,"Natalia"),(4,"Mariela"),(6,"Ricardo")],
-    "Caso 7: Usuario con amigos del mismo nombre" ~: (amigosDe redF (5, "Natalia")) ~?= [(9,"Lucia"),(11,"Natalia"),(2,"Natalia")]
+    "Caso 1: Usuario sin ningun amigo en una red social con amistades " ~: (amigosDe redB usuario5) ~?= [],
+    "Caso 2: Usuario sin ningun amigo en una red social sin amistades" ~: (amigosDe redE usuario6 ) ~?= [], 
+    "Caso 3: Usuario sin amigos en una red con solo un usuario" ~: (amigosDe redD usuario3 ) ~?= [],
+    "Caso 4: Usuario con un amigo" ~: (amigosDe redB usuario3) ~?= [usuario2],
+    "Caso 5: Usuario con más de un amigo" ~: (amigosDe redA usuario1) ~?= [usuario2, usuario4],
+    "Caso 6: Usuario con amigo del mismo nombre" ~: (amigosDe redC usuario5) ~?= [usuario2, usuario4, usuario6],
+    "Caso 7: Usuario con amigos del mismo nombre" ~: (amigosDe redF usuario5) ~?= [usuario9, usuario11, usuario2]
     ]
 
 run3= runTestTT testcantidadDeAmigos
 testcantidadDeAmigos = test [
-    "Caso 1: Sin amigos en una red con usuarios" ~: (cantidadDeAmigos redE (6, "Ricardo") ) ~?= 0,
-    "Caso 2: Sin amigos en una red con solo un usuario" ~: (cantidadDeAmigos redD (3, "Pedro"))  ~?= 0,
-    "Caso 3: Con un amigo" ~: (cantidadDeAmigos redB (3, "Pedro")) ~?= 1,
-    "Caso 4: Con más de un amigo" ~: (cantidadDeAmigos redC (2, "Natalia")) ~?= 4
+    "Caso 1: Sin amigos en una red con usuarios" ~: (cantidadDeAmigos redE usuario6 ) ~?= 0,
+    "Caso 2: Sin amigos en una red con solo un usuario" ~: (cantidadDeAmigos redD usuario3)  ~?= 0,
+    "Caso 3: Con un amigo" ~: (cantidadDeAmigos redB usuario3) ~?= 1,
+    "Caso 4: Con más de un amigo" ~: (cantidadDeAmigos redC usuario2) ~?= 4
     ]
 
 run4= runTestTT testusuarioConMasAmigos 
 testusuarioConMasAmigos = test [
     
-    "Caso 1: Con la misma cantidad de amigos que otro usuario" ~: (usuarioConMasAmigos redC) ~?= (4, "Mariela"),
-    "Caso 2: Con la misma cantidad de amigos que otro usuario, y en la que su cantidad es 0" ~: (usuarioConMasAmigos redG) ~?= (7, "Armando"),
-    "Caso 3: Usuario con la mayor cantidad de amigos" ~: (usuarioConMasAmigos redF) ~?= (9,"Lucia")
+    "Caso 1: Con la misma cantidad de amigos que otro usuario" ~: (usuarioConMasAmigos redC) ~?= usuario4,
+    "Caso 2: Con la misma cantidad de amigos que otro usuario, y en la que su cantidad es 0" ~: (usuarioConMasAmigos redG) ~?= usuario7,
+    "Caso 3: Usuario con la mayor cantidad de amigos" ~: (usuarioConMasAmigos redF) ~?= usuario9
     ]
 
 
@@ -82,34 +82,36 @@ testestaRobertoCarlos = test [
 
 run6=runTestTT testpublicacionesDe
 testpublicacionesDe = test [
-    "Caso 1: Usuario sin ninguna publicacion en una red sin publicaciones" ~: (publicacionesDe redG (12, "Julian") ) ~?= [],
-    "Caso 2: Usuario sin ninguna publicacion en una red social con publicaciones" ~: (publicacionesDe redB (2, "Natalia")) ~?= [],
-    "Caso 3: Usuario con una publicacion" ~: (publicacionesDe redE (4,"Mariela"))~?= [(usuario4, "I am Alice. Not", [usuario1, usuario2])],
-    "Caso 4: Usuario con más de una publicacion" ~: (publicacionesDe redB (1, "Juan")) ~?= [((1,"Juan"),"Este es mi tercer post",[(2,"Natalia"),(5,"Natalia")]),((1,"Juan"),"Este es mi cuarto post",[]),((1,"Juan"),"Este es como mi quinto post",[(5,"Natalia")])]
+    "Caso 1: Usuario sin ninguna publicacion en una red sin publicaciones" ~: (publicacionesDe redG usuario12 ) ~?= [],
+    "Caso 2: Usuario sin ninguna publicacion en una red social con publicaciones" ~: (publicacionesDe redB usuario2) ~?= [],
+    "Caso 3: Usuario con una publicacion" ~: (publicacionesDe redE usuario4)~?= [(usuario4, "I am Alice. Not", [usuario1, usuario2])],
+    "Caso 4: Usuario con más de una publicacion" ~: (publicacionesDe redB usuario1) ~?= [(usuario1,"Este es mi tercer post",[usuario2,usuario5]),(usuario1,"Este es mi cuarto post",[]),(usuario1,"Este es como mi quinto post",[usuario5])]
     ]
 
 run7= runTestTT testPublicacionesQueLeGustanA
 testPublicacionesQueLeGustanA= test[
-    "Caso 1: Usuario que no le gusta ninguna publicacion en una red con publicaciones" ~: (publicacionesQueLeGustanA redA (3,"Pedro")) ~?= [],
-    "Caso 2: Usuario que no le gusta ninguna publicacion en una red sin publicaciones" ~: (publicacionesQueLeGustanA redD (7,"Armando")) ~?= [],
+    "Caso 1: Usuario que no le gusta ninguna publicacion en una red con publicaciones" ~: (publicacionesQueLeGustanA redA usuario3) ~?= [],
+    "Caso 2: Usuario que no le gusta ninguna publicacion en una red sin publicaciones" ~: (publicacionesQueLeGustanA redD usuario7) ~?= [],
     "Caso 3: Usuario que le gusta una publicacion" ~: (publicacionesQueLeGustanA redX usuario11) ~?= [(usuario13, "bastaaaaaaaa", [usuario11])],
-    "Caso 4: Usuario que le gusta más de una publicacion" ~:(publicacionesQueLeGustanA redA (4, "Mariela")) ~?= [(usuario1, "Este es mi primer post", [usuario2, usuario4]),(usuario1, "Este es mi segundo post", [usuario4]),(usuario2, "Hello World", [usuario4]),(usuario2, "Good Bye World", [usuario1, usuario4])]
+    "Caso 4: Usuario que le gusta más de una publicacion" ~:(publicacionesQueLeGustanA redA usuario4) ~?= [(usuario1, "Este es mi primer post", [usuario2, usuario4]),(usuario1, "Este es mi segundo post", [usuario4]),(usuario2, "Hello World", [usuario4]),(usuario2, "Good Bye World", [usuario1, usuario4])]
     ]
 
 
 run8= runTestTT testlesGustanLasMismasPublicaciones
 testlesGustanLasMismasPublicaciones = test[
-    "Caso 1: Dos usuarios que no le dieron like a ninguna publicacion" ~: (lesGustanLasMismasPublicaciones redF (usuario3) (usuario7)) ~?= True, -- por ahi esta mal
-    "Caso 2: Dos usuarios que le dieron like a las mismas publicaciones y a la misma cantidad" ~: (lesGustanLasMismasPublicaciones redH (usuario5) (usuario2)) ~?= True,
-    "Caso 3: Dos usuario le dieron like a la misma cantidad de publicaciones pero comparten solo una" ~: (lesGustanLasMismasPublicaciones redB (usuario2) (usuario5)) ~?= False,
-    "Caso 4: Un usuario le dio like a las mismas publicaciones que otro, pero a uno le gusto una publicacion mas" ~: (lesGustanLasMismasPublicaciones redH (usuario7) (usuario6)) ~?= False,
-    "Caso 5: Se ingresa dos veces el mismo usuario" ~: (lesGustanLasMismasPublicaciones redH (usuario4) (usuario4)) ~?= True
+    "Caso 1: Dos usuarios que no le dieron like a ninguna publicacion" ~: (lesGustanLasMismasPublicaciones redF usuario3 usuario7 ) ~?= True, 
+    "Caso 2: Dos usuarios que le dieron like solo a una publicacion y es exactamente la misma " ~: (lesGustanLasMismasPublicaciones redH usuario2 usuario5) ~?= True, 
+    "Caso 3: Dos usuarios que le dieron like a varias publicaciones y son las mismas" ~: (lesGustanLasMismasPublicaciones redE usuario1 usuario2 ) ~?= True,
+    "Caso 4: Dos usuarios que le dieron like a la misma cantidad de publicaciones pero solo tienen una en común" ~: (lesGustanLasMismasPublicaciones redC usuario2 usuario5) ~?= False,  
+    "Caso 5  Dos usuarios que le dieron like a la misma cantidad de publicaciones pero solo tienen algunas en común" ~: (lesGustanLasMismasPublicaciones redC usuario7 usuario6) ~?= False,
+    "Caso 6: Dos usuarios que le dieron like a las mismas publicaciones, pero no a la misma cantidad" ~: (lesGustanLasMismasPublicaciones redH usuario7 usuario6) ~?= False,
+    "Caso 7: Se ingresa dos veces el mismo usuario" ~: (lesGustanLasMismasPublicaciones redH (usuario4) (usuario4)) ~?= True
     ]
 
 run9 = runTestTT testtieneUnSeguidorFiel
 testtieneUnSeguidorFiel = test [
     "Caso 1: Usuario que solo tiene autolikes" ~: (tieneUnSeguidorFiel redF usuario10) ~?= False,
-    "Caso 2: Algun usuario le dio like a todas las publicaciones del usuario ingresado" ~: (tieneUnSeguidorFiel redF usuario12) ~?= True,
+    "Caso 2: Algún usuario le dio like a todas las publicaciones del usuario ingresado" ~: (tieneUnSeguidorFiel redF usuario12) ~?= True,
     "Caso 3: Un usuario le dio like a algunas de las publicaciones del usuario ingresado" ~: (tieneUnSeguidorFiel redF usuario1) ~?= False,
     "Caso 4: El usuario ingresado no tiene likes en ninguna de sus publicaciones" ~: (tieneUnSeguidorFiel redF usuario11) ~?= False
     ]
@@ -144,6 +146,7 @@ usuario14 = (14, "Ricardo")
 usuario15 = (15, "Paula")
 
 
+
 relacion1_2 = (usuario1, usuario2)
 relacion1_3 = (usuario1, usuario3)
 relacion1_9 = (usuario1, usuario9)
@@ -167,33 +170,40 @@ relacion9_4 = (usuario4, usuario9)
 relacion10_9 =(usuario10,usuario9)
 relacion10_2 = (usuario10, usuario2)
 relacion11_9 = (usuario11,usuario9)
-relacion12_9 = (usuario9,usuario12)
+relacion12_9 = (usuario9, usuario12)
 relacion11_5 = (usuario5, usuario11)
 
 
 
 publicacion1_1 = (usuario1, "Este es mi primer post", [usuario2, usuario4])
 publicacion1_2 = (usuario1, "Este es mi segundo post", [usuario4])
-publicacion1_3 = (usuario1, "Este es mi tercer post", [usuario2, usuario5])
+publicacion1_3 = (usuario1, "Este es mi tercer post", [usuario2, usuario5])--
 publicacion1_4 = (usuario1, "Este es mi cuarto post", [])
-publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])
+publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])--
 
 publicacion2_1 = (usuario2, "Hello World", [usuario4])
 publicacion2_2 = (usuario2, "Good Bye World", [usuario1, usuario4])
 publicacion2_3 = (usuario2, "Que onda", [usuario4, usuario1]) 
 
-publicacion3_1 = (usuario3, "Lorem Ipsum", [])
-publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])
+publicacion3_1 = (usuario3, "Lorem Ipsum", [])--
+publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])--
 publicacion3_3 = (usuario3, "consectetur adipiscing elit", [usuario2, usuario5])
 publicacion3_4 = (usuario3, "Allahu Akbar", [usuario6, usuario7])
+
 publicacion4_1 = (usuario4, "I am Alice. Not", [usuario1, usuario2])
 publicacion4_2 = (usuario4, "I am Bob", [])
 publicacion4_3 = (usuario4, "Just kidding, i am Mariela", [usuario1, usuario3])
 publicacion4_4 = (usuario2, "Francia Segundo", [usuario4, usuario1]) 
 publicacion4_5 = (usuario4, "Quien engaño a Roger Rabbit", [usuario7]) 
 
+publicacion5_1 = (usuario5, "Selfie", [usuario1, usuario2]) 
+publicacion5_2 = (usuario5, "Tengo hambre", [usuario1, usuario2])
 
 publicacion6_1 = (usuario6, "Apruebenme", [usuario6, usuario7, usuario3])
+publicacion6_2 = (usuario6, "Desaprobé jaja", [usuario6, usuario7])
+
+publicacion7_1 =  (usuario7, "Escuchando música", [usuario2, usuario5])
+publicacion7_2 =  (usuario7, " Viajandoo", [usuario6])
 
 publicacion10_1 = (usuario10, "A mi tambien!", [usuario10])
 publicacion10_2 = (usuario10, "Me too!", [usuario10])
@@ -224,9 +234,9 @@ publicacionesB = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1
 redB = (usuariosB, relacionesB, publicacionesB)
 
 --redC 
-relacionesC = [relacion1_2, relacion2_3, relacion2_5, relacion3_4, relacion4_2, relacion4_5, relacion5_6, relacion6_7, relacion7_8,relacion9_4]
+relacionesC = [relacion1_2, relacion2_3, relacion2_5, relacion3_4, relacion4_2, relacion4_5, relacion5_6, relacion6_7, relacion7_8, relacion9_4]
 usuariosC = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9]
-publicacionesC = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_3]
+publicacionesC = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_4, publicacion4_5, publicacion6_2, publicacion7_2]
 redC = (usuariosC, relacionesC, publicacionesC)
 
 --redVacia
@@ -243,8 +253,8 @@ redD = (usuariosConSoloUnUsuario, relacionesDeUnUsuario, publicacionesDeUnUsuari
 
 --redE (Sin relaciones de amistad)
 relacionesE = []
-usuariosE = [usuario2, usuario4, usuario5, usuario6]
-publicacionesE = [publicacion2_1,publicacion4_1]
+usuariosE = [usuario1, usuario2, usuario4, usuario5, usuario6]
+publicacionesE = [publicacion4_1, publicacion5_1, publicacion5_2]
 redE= (usuariosE, relacionesE, publicacionesE)
 
 --redF (Con muchas relaciones de amistad)
@@ -262,7 +272,7 @@ redG = (usuariosG, relacionesG, publicacionesG)
 -- redH
 relacionesH = [relacion3_4]
 usuariosH = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7]
-publicacionesH = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1]
+publicacionesH = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1, publicacion7_1]
 redH = (usuariosH, relacionesH, publicacionesH)
 
 -- redX
@@ -270,3 +280,4 @@ relacionesX = [relacion1_3, relacion3_4, relacion4_5, relacion5_6, relacion6_7, 
 usuariosX = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11, usuario13]
 publicacionesX = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1, publicacion13_1]
 redX = (usuariosX, relacionesX, publicacionesX)
+
