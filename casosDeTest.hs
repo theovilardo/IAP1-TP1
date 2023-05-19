@@ -99,9 +99,9 @@ testPublicacionesQueLeGustanA= test[
 
 run8= runTestTT testlesGustanLasMismasPublicaciones
 testlesGustanLasMismasPublicaciones = test[
-    "Caso 1: Dos usuarios que no le dieron like a ninguna publicacion" ~: (lesGustanLasMismasPublicaciones redF (usuario3) (usuario7)) ~?= True, -- por ahi esta mal
-    "Caso 2: Dos usuarios que le dieron like a las mismas publicaciones y a la misma cantidad" ~: (lesGustanLasMismasPublicaciones redH (usuario5) (usuario2)) ~?= True,
-    "Caso 3: Dos usuario le dieron like a la misma cantidad de publicaciones pero comparten solo una" ~: (lesGustanLasMismasPublicaciones redB (usuario2) (usuario5)) ~?= False,
+    "Caso 1: Dos usuarios que no le dieron like a ninguna publicacion" ~: (lesGustanLasMismasPublicaciones redF (usuario3) (usuario7)) ~?= True, 
+    "Caso 2: Dos usuarios que le dieron like solo a una publicacion y es exactamente la misma " ~: (lesGustanLasMismasPublicaciones redB (usuario2) (usuario5)) ~?= False,--debería dar TRUE
+    "Caso 3: Dos usuarios que le dieron like a varias publicaciones y son las mismas" ~: (lesGustanLasMismasPublicaciones redH (usuario5) (usuario2)) ~?= True,
     "Caso 4: Un usuario le dio like a las mismas publicaciones que otro, pero a uno le gusto una publicacion mas" ~: (lesGustanLasMismasPublicaciones redH (usuario7) (usuario6)) ~?= False,
     "Caso 5: Se ingresa dos veces el mismo usuario" ~: (lesGustanLasMismasPublicaciones redH (usuario4) (usuario4)) ~?= True
     ]
@@ -109,7 +109,7 @@ testlesGustanLasMismasPublicaciones = test[
 run9 = runTestTT testtieneUnSeguidorFiel
 testtieneUnSeguidorFiel = test [
     "Caso 1: Usuario que solo tiene autolikes" ~: (tieneUnSeguidorFiel redF usuario10) ~?= False,
-    "Caso 2: Algun usuario le dio like a todas las publicaciones del usuario ingresado" ~: (tieneUnSeguidorFiel redF usuario12) ~?= True,
+    "Caso 2: Algún usuario le dio like a todas las publicaciones del usuario ingresado" ~: (tieneUnSeguidorFiel redF usuario12) ~?= True,
     "Caso 3: Un usuario le dio like a algunas de las publicaciones del usuario ingresado" ~: (tieneUnSeguidorFiel redF usuario1) ~?= False,
     "Caso 4: El usuario ingresado no tiene likes en ninguna de sus publicaciones" ~: (tieneUnSeguidorFiel redF usuario11) ~?= False
     ]
@@ -167,7 +167,7 @@ relacion9_4 = (usuario4, usuario9)
 relacion10_9 =(usuario10,usuario9)
 relacion10_2 = (usuario10, usuario2)
 relacion11_9 = (usuario11,usuario9)
-relacion12_9 = (usuario9,usuario12)
+relacion12_9 = (usuario9, usuario12)
 relacion11_5 = (usuario5, usuario11)
 
 
