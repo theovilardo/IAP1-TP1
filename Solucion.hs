@@ -168,22 +168,20 @@ algunoDioLikeATodas (us,rs,ps) (x:xs) (y:ys) | compartenElementos (y:ys) (public
                                              | otherwise = algunoDioLikeATodas (us,rs,ps) xs (y:ys)
 
  
--- EJERCICIO 10 -> Devuelve True si en la red existe una cadena de amistades
--- Para que exista una cadena de amistades se tiene que llegar de uno al otro a través de relaciones directas o indirectas
--- Relación directa: el usuario es amigo del usuario ingresado
--- Relación indirecta: el usuario no es amigo del usuario ingresado, pero tiene amigos en común o sus amigos tienen amigos en común con el usuario ingresado
+-- EJERCICIO 10 -> Devuelve True cuando el primer usuario pertenece a la lista de amigos del segundo o cuando el segundo usuario pertenece a la lista de relaciones directas e indirectas del primero (explicación más abajo), en otro caso, devuelve False
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos (us,rs,ps) u1 u2 | (amigosDe (us,rs,ps) u1) == [] || (amigosDe (us,rs,ps) u2) == [] = False
                                          | pertenece u1 (amigosDe (us,rs,ps) u2) = True
                                          | pertenece u2 (amistadDirectaEIndirecta (us,rs,ps) u1 (amigosDe (us,rs,ps) u1)) = True
                                          | otherwise = False   
                               
--- Crea una lista que contiene todos los usuarios con los que se relaciona directa o indirectamente el usuario ingresado. 
+-- Devuelve una lista con los usuarios de la lista ingresada, con los amigos de esos usuarios y con los amigos de esos amigos, de ser necesario
 amistadDirectaEIndirecta :: RedSocial -> Usuario -> [Usuario] -> [Usuario]
 amistadDirectaEIndirecta (us,rs,ps) u1 [] = []
 amistadDirectaEIndirecta (us,rs,ps) u1 (x:xs) = [x] ++ (amigosDeAmigos (us,rs,ps) (amigosDe (us,rs,ps) x) (u1:x:[])) ++ amistadDirectaEIndirecta (us,rs,ps) u1 xs 
 
---Crea una lista con los amigos de los amigos de los usuarios y en cada recursión quita de la primera lista los usuarios que ya fueron chequeados para evitar un bucle infinito
+-- Devuelve una lista con los amigos de los usuarios de la primera lista ingresada y con los amigos de esos amigos (similar a la función anterior)
+-- Cuando hace recursión para agregar a los amigos de los usuarios, agrega a la segunda lista ingresada a todos los usuarios cuyos amigos ya fueron concatenados y los elimina de la primera lista para evitar un bucle infinito
 amigosDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 amigosDeAmigos (us,rs,ps) [] ys = []
 amigosDeAmigos (us,rs,ps) (x:xs) ys = [x] ++ (amigosDeAmigos (us,rs,ps) (quitarLista ys (amigosDe (us,rs,ps) x)) (x:ys)) ++ amigosDeAmigos (us,rs,ps) xs ys
