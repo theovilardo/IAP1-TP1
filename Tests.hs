@@ -41,7 +41,7 @@ testdeListadeNombresdeUsuarios = test [
     "Caso 1: Con un usuario" ~: (nombresDeUsuarios redD) ~?= ["Pedro"], 
     "Caso 2: Con más de un usuario" ~: (nombresDeUsuarios redC) ~?= ["Juan","Pedro","Mariela","Natalia","Ricardo","Armando","Alberto","Lucia"],
     "Caso 3: Sin usuarios" ~: (nombresDeUsuarios redVacia) ~?= [],
-    "Caso 4: Con varios usuarios con el mismo nombre" ~: (nombresDeUsuarios redF) ~?= ["Juan","Pedro","Mariela","Armando","Alberto","Lucia","Natalia","Julian","Ricardo"] 
+    "Caso 4: Con varios usuarios con el mismo nombre" ~: (nombresDeUsuarios redF) ~?= ["Juan","Pedro","Mariela","Armando","Alberto","Lucia","Natalia","Julian","Ricardo"]
     ]
 
 run2= runTestTT testdeamigosDe
@@ -99,13 +99,13 @@ testPublicacionesQueLeGustanA= test[
 
 run8= runTestTT testlesGustanLasMismasPublicaciones
 testlesGustanLasMismasPublicaciones = test[
-    "Caso 1: Dos usuarios que no le dieron like a ninguna publicacion" ~: (lesGustanLasMismasPublicaciones redF usuario3 usuario7 ) ~?= True, 
-    "Caso 2: Dos usuarios que le dieron like solo a una publicacion y es exactamente la misma " ~: (lesGustanLasMismasPublicaciones redH usuario2 usuario5) ~?= True, 
+    "Caso 1: Dos usuarios que no le dieron like a ninguna publicación" ~: (lesGustanLasMismasPublicaciones redF usuario3 usuario7 ) ~?= True, 
+    "Caso 2: Dos usuarios que le dieron like solo a una publicación y es exactamente la misma " ~: (lesGustanLasMismasPublicaciones redH usuario2 usuario5) ~?= True, 
     "Caso 3: Dos usuarios que le dieron like a varias publicaciones y son las mismas" ~: (lesGustanLasMismasPublicaciones redE usuario1 usuario2 ) ~?= True,
     "Caso 4: Dos usuarios que le dieron like a la misma cantidad de publicaciones pero solo tienen una en común" ~: (lesGustanLasMismasPublicaciones redC usuario2 usuario5) ~?= False,  
     "Caso 5  Dos usuarios que le dieron like a la misma cantidad de publicaciones pero solo tienen algunas en común" ~: (lesGustanLasMismasPublicaciones redC usuario7 usuario6) ~?= False,
     "Caso 6: Dos usuarios que le dieron like a las mismas publicaciones, pero no a la misma cantidad" ~: (lesGustanLasMismasPublicaciones redH usuario7 usuario6) ~?= False,
-    "Caso 7: Se ingresa dos veces el mismo usuario" ~: (lesGustanLasMismasPublicaciones redH (usuario4) (usuario4)) ~?= True
+    "Caso 7: Se ingresa dos veces el mismo usuario" ~: (lesGustanLasMismasPublicaciones redH usuario4 usuario4) ~?= True
     ]
 
 run9 = runTestTT testtieneUnSeguidorFiel
@@ -119,7 +119,7 @@ testtieneUnSeguidorFiel = test [
 run10 = runTestTT testexisteSecuenciaDeAmigos
 testexisteSecuenciaDeAmigos = test [
     "Caso 1: Alguno de los usuarios ingresados no tiene amigos" ~: (existeSecuenciaDeAmigos redX usuario2 usuario1) ~?= False,
-    "Caso 2: Los usuarios ingresados tienen un amigo en comun" ~: (existeSecuenciaDeAmigos redC usuario1 usuario3) ~?= True,
+    "Caso 2: Los usuarios ingresados tienen un amigo en común" ~: (existeSecuenciaDeAmigos redC usuario1 usuario3) ~?= True,
     "Caso 3: Existe una relacion indirecta (por transitividad) entre los usuarios ingresados" ~: (existeSecuenciaDeAmigos redC usuario1 usuario9) ~?= True,
     "Caso 4: No existe relacion entre los usuarios ingresados (no existe la cadena)" ~: (existeSecuenciaDeAmigos redX usuario3 usuario10) ~?= False,
     "Caso 5: No existen relaciones en la red social ingresada" ~: (existeSecuenciaDeAmigos redG usuario12 usuario7) ~?= False
@@ -143,7 +143,6 @@ usuario11 = (11, "Natalia")
 usuario12 = (12, "Julian")
 usuario13 = (13, "Ricardo")
 usuario14 = (14, "Ricardo")
-usuario15 = (15, "Paula")
 
 
 
@@ -233,6 +232,7 @@ relacionesB = [relacion1_2, relacion2_3]
 publicacionesB = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_3]
 redB = (usuariosB, relacionesB, publicacionesB)
 
+
 --redC 
 relacionesC = [relacion1_2, relacion2_3, relacion2_5, relacion3_4, relacion4_2, relacion4_5, relacion5_6, relacion6_7, relacion7_8, relacion9_4]
 usuariosC = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9]
@@ -280,4 +280,3 @@ relacionesX = [relacion1_3, relacion3_4, relacion4_5, relacion5_6, relacion6_7, 
 usuariosX = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11, usuario13]
 publicacionesX = [publicacion2_3, publicacion3_4, publicacion4_4, publicacion4_5, publicacion6_1, publicacion13_1]
 redX = (usuariosX, relacionesX, publicacionesX)
-
