@@ -116,7 +116,7 @@ tieneMasAmigos (us,rs,ps) (x:xs) | xs == [] = x
                                  | otherwise = tieneMasAmigos (us,rs,ps) xs
 
 
--- EJERCICIO 5 -> Devuelve True si dentro de la red hay un usuario con más de un diez amigos, se utiliza la funcion "usuarioConMasAmigos" ya que si el que mas amigos tiene no alcanza esa cantidad, los que tienen menos tampoco podrán.
+-- EJERCICIO 5 -> Devuelve True si dentro de la red hay un usuario con más de diez amigos, se utiliza la funcion "usuarioConMasAmigos" ya que si el que mas amigos tiene no alcanza esa cantidad, los que tienen menos tampoco podrán.
 estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 10 = True
                              | otherwise = False
