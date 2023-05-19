@@ -174,7 +174,9 @@ existeSecuenciaDeAmigos (us,rs,ps) u1 u2 | (amigosDe (us,rs,ps) u1) == [] || (am
                                          | pertenece u1 (amigosDe (us,rs,ps) u2) = True
                                          | pertenece u2 (amistadDirectaEIndirecta (us,rs,ps) u1 (amigosDe (us,rs,ps) u1)) = True
                                          | otherwise = False   
-                              
+ 
+-- Funciones Auxiliares
+
 -- Devuelve una lista con los usuarios de la lista ingresada, con los amigos de esos usuarios y con los amigos de esos amigos, de ser necesario
 amistadDirectaEIndirecta :: RedSocial -> Usuario -> [Usuario] -> [Usuario]
 amistadDirectaEIndirecta (us,rs,ps) u1 [] = []
