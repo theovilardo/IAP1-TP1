@@ -72,31 +72,31 @@ estaContenida (x:xs) ys | pertenece x ys && (x:xs) == [x] = True
                         | otherwise = estaContenida xs ys 
 
 
--- EJERCICIO 1 -> Devuelve un conjunto con los nombres de usuario de la red social
+-- EJERCICIO 1 -> Devuelve una lista con los nombres de usuario de la red social ingresada sin repetir ninguno.
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios (us,rs,ps) = eliminaRepetidos (proyectarNombres (usuarios (us,rs,ps)))
 
 -- Funciones Auxiliares
 
-proyectarNombres :: [Usuario] -> [String]
+proyectarNombres :: [Usuario] -> [String] -- Concatena los nombres de los usuarios de la lista perteneciente a la red social ingresada y devuelve una lista con todos los nombres de usuario.
 proyectarNombres [] = []
 proyectarNombres (x:xs) = nombreDeUsuario x : proyectarNombres xs
 
 
--- EJERCICIO 2 -> Devuelve un conjunto con los amigos que tiene el usuario ingresado dentro de la red
+-- EJERCICIO 2 -> Devuelve una lista con los amigos que tiene el usuario ingresado dentro de la red (sin repetir ninguno).
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe (us,rs,ps) u = eliminaRepetidos (listaDeAmigosDe u (relaciones (us,rs,ps)))
 
 -- Funciones Auxiliares
 
-listaDeAmigosDe :: Usuario -> [Relacion] -> [Usuario]
+listaDeAmigosDe :: Usuario -> [Relacion] -> [Usuario] -- Devuelve una lista concatenando los usuarios que pertenezcan a las relaciones del usuario ingresado dentro de la red, para esto la funcion chequea si el usuario ingresado aparene en el primer o segundo lugar de la tupla (relacion).
 listaDeAmigosDe u [] = []
 listaDeAmigosDe u (x:xs) | u == fst x = snd x : listaDeAmigosDe u xs
                          | u == snd x = fst x : listaDeAmigosDe u xs
                          | otherwise = listaDeAmigosDe u xs 
 
 
--- EJERCICIO 3 -> Devuelve la cantidad de amigos que tiene el usuario ingresado dentro de la red
+-- EJERCICIO 3 -> Devuelve la cantidad de amigos que tiene el usuario ingresado dentro de la red social.
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
 cantidadDeAmigos (us,rs,ps) u = longitud (amigosDe (us,rs,ps) u)
 
@@ -109,46 +109,46 @@ usuarioConMasAmigos (us,rs,ps) = tieneMasAmigos (us,rs,ps) (usuarios (us,rs,ps))
 
 -- Funciones Auxiliares
 
-tieneMasAmigos :: RedSocial -> [Usuario] -> Usuario
+tieneMasAmigos :: RedSocial -> [Usuario] -> Usuario -- Compara la cantidad de amigos de todos los usuarios dentro de la red ingresada y devuelve al que tenga mayor cantidad.
 tieneMasAmigos (us,[],ps) (x:xs) = x
 tieneMasAmigos (us,rs,ps) (x:xs) | xs == [] = x
                                  | cantidadDeAmigos (us,rs,ps) x > cantidadDeAmigos (us,rs,ps) (head xs) = tieneMasAmigos (us,rs,ps) (x : (tail xs))
                                  | otherwise = tieneMasAmigos (us,rs,ps) xs
 
 
--- EJERCICIO 5 -> Devuelve True si dentro de la red hay un usuario con más de un diez amigos
+-- EJERCICIO 5 -> Devuelve True si dentro de la red hay un usuario con más de un diez amigos, se utiliza la funcion "usuarioConMasAmigos" ya que si el que mas amigos tiene no alcanza esa cantidad, los que tienen menos tampoco podrán.
 estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos (us,rs,ps) | cantidadDeAmigos (us,rs,ps) (usuarioConMasAmigos (us,rs,ps)) > 10 = True
                              | otherwise = False
 
 
--- EJERCICIO 6 -> Devuelve un conjunto con las publicaciones de un usuario dentro de la red social
+-- EJERCICIO 6 -> Devuelve una lista con todas las publicaciones del usuario ingresado dentro de la red social (sin repetir ninguna).
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
 publicacionesDe (us,rs,ps) u = eliminaRepetidos (listaDePublicacionesDe (publicaciones (us,rs,ps)) u)
 
 -- Funciones Auxiliares
 
-listaDePublicacionesDe :: [Publicacion] -> Usuario -> [Publicacion]
+listaDePublicacionesDe :: [Publicacion] -> Usuario -> [Publicacion] -- Chequea recursivamente que las publicaciones de la red social sean del usuario ingresado, de ser asi creara una lista de las publicaciones concatenando las que cumplan dicha condicion.
 listaDePublicacionesDe [] _ = []
 listaDePublicacionesDe (x:xs) u | null (x:xs) = [x]
                               | usuarioDePublicacion x == u = x : listaDePublicacionesDe xs u
                               | otherwise = listaDePublicacionesDe xs u
 
 
--- EJERCICIO 7 -> Devuelve un conjunto con las publicaciones que le gustaron al usuario ingresado (dentro de la red)
+-- EJERCICIO 7 -> Devuelve una lista de las publicaciones que le gustaron al usuario ingresado (dentro de la red).
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
 publicacionesQueLeGustanA (us,rs,ps) u = eliminaRepetidos (tusLikes (publicaciones (us,rs,ps)) u)
 
 -- Funciones Auxiliares
 
-tusLikes :: [Publicacion] -> Usuario -> [Publicacion]
+tusLikes :: [Publicacion] -> Usuario -> [Publicacion] -- Chequea recursivamente la lista de publicaciones de la red ingreada, y cuando el usuario ingresado pertenezca a los likes de alguna publicacion, estas seran concatenadas creando asi una lista de publicaciones.
 tusLikes [] _ = []
 tusLikes (x:xs) u | null (x:xs) = [x]
                   | pertenece u (likesDePublicacion x) = x : tusLikes xs u
                   | otherwise = tusLikes xs u
 
 
--- EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones #Actualizado para la version 2.1 del TP
+-- EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones y a la misma cantidad de publicaciones.
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
 lesGustanLasMismasPublicaciones (us,rs,ps) u1 u2 | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == 0 && longitud (publicacionesQueLeGustanA (us,rs,ps) u2) == 0 = True
                                                  | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == longitud (publicacionesQueLeGustanA (us,rs,ps) u2) && estaContenida (publicacionesQueLeGustanA (us,rs,ps) u1) (publicacionesQueLeGustanA (us,rs,ps) u2) = True
