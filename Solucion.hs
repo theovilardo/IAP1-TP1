@@ -148,19 +148,19 @@ tusLikes (x:xs) u | null (x:xs) = [x]
                   | otherwise = tusLikes xs u
 
 
--- EJERCICIO 8 -> Devuelve True si los usuarios ingresados le dieron me gusta a las mismas publicaciones y a la misma cantidad de publicaciones.
+-- EJERCICIO 8 -> Retorna True si ambos usuarios no le dieron like a ninguna publicación. En otros casos, compara la longitud de la lista de publicaciones que les gustan a ambos usuarios y verifica si todos los elementos de la primera lista están contenidos en la segunda. Si se cumplen ambas condiciones, retorna True; sino, retorna False.
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
 lesGustanLasMismasPublicaciones (us,rs,ps) u1 u2 | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == 0 && longitud (publicacionesQueLeGustanA (us,rs,ps) u2) == 0 = True
                                                  | longitud (publicacionesQueLeGustanA (us,rs,ps) u1) == longitud (publicacionesQueLeGustanA (us,rs,ps) u2) && estaContenida (publicacionesQueLeGustanA (us,rs,ps) u1) (publicacionesQueLeGustanA (us,rs,ps) u2) = True
                                                  | otherwise = False
 
 
--- EJERCICIO 9 -> Devuelve True si existe un usuario que le haya dado like a todas las publicaciones hechas por el usuario ingresado
+-- EJERCICIO 9 -> Evalúa "algunoDioLikeATodas" con los parámetros: la red, la lista de usuarios (sin el usuario ingresado) y las publicaciones del usuario ingresado. Retorna True si hay un usuario en la red que le dio like a todas sus publicaciones; sino, retorna False.
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel (us,rs,ps) u = algunoDioLikeATodas (us,rs,ps) (quitar u (usuarios (us,rs,ps))) (publicacionesDe (us,rs,ps) u)
 
 -- Funciones Auxiliares
-
+-- Recorre la lista de usuarios y la lista de publicaciones y verifica si alguna de las publicaciones se encuentra dentro de la lista de publicaciones que le gustan a cada usuario de la lista. Devuelve "True" si encuentra alguna coincidencia, sino sigue verificando con todos los usuarios de la lista hasta llegar al final. Si no encuentra coincidencias, devuelve False.
 algunoDioLikeATodas :: RedSocial -> [Usuario] -> [Publicacion] -> Bool
 algunoDioLikeATodas (_,_,_) [] _ = False
 algunoDioLikeATodas (us,rs,ps) _ [] = False
